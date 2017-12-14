@@ -51,6 +51,8 @@ adb start-server // 重启adb服务进程
 adb root // 已root权限重启adb服务
 adb wait-for-device // 在模拟器/设备连接之前把命令转载在adb的命令器中
 adb shell cat /data/misc/wifi/*.conf //查看wifi密码
+busybox microcom -t 30000 -s 9600 /dev/ttyS4 //调试串口
+adb shell cat /dev/ttyS4
 ```
 # 获取设备硬件信息
 ```
@@ -81,6 +83,8 @@ adb shell ps -x [PID] // 查看指定进程状态
 adb shell service list // 查看后台services信息
 adb shell cat /proc/meminfo // 查看当前内存占用
 adb shell cat /proc/iomem // 查看IO内存分区
+adb shell settings get secure default_input_method // 查看设备的输入法
+adb shell settings put secure default_input_method com.sohu.inputmethod.sogou/.SogouIME // 设置为搜狗输入法
 ```
 
 # 文件操作
@@ -99,6 +103,14 @@ adb shell mv path/file newpath/file // 移动文件
 adb shell chmod 777 /system/fonts/DroidSansFallback.ttf // 设置文件权限
 adb shell mkdir path/foldelname // 新建文件夹
 adb shell cat <file> // 查看文件内容
+
+# adb 屏幕旋转
+adb shell settings put system accelerometer_rotation 1
+adb shell settings put system user_rotation 0
+adb shell settings put system accelerometer_rotation 0
+
+# 获取屏幕参数
+adb shell dumpsys window displays
 ```
 
 [Android adb命令官网](https://developer.android.com/studio/command-line/adb.html#Enabling)
